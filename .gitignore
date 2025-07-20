@@ -1,0 +1,6 @@
+
+models/
+*.tar.gz
+src/rnnoise_data_little.c
+src/rnnoise_data_little.h
+
