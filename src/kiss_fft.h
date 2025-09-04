@@ -32,10 +32,13 @@
 #include <stdlib.h>
 #include <math.h>
 #include "arch.h"
+#include <zephyr/kernel.h>
+// #include <zephyr/sys/printk.h>
 
 #include <stdlib.h>
-#define opus_alloc(x) malloc(x)
-#define opus_free(x) free(x)
+// #define opus_alloc(x)  k_malloc(x); printk("[alloc] %d\n", x);
+#define opus_alloc(x)  k_malloc(x)
+#define  opus_free(x)  k_free(x)
 
 #ifdef __cplusplus
 extern "C" {
