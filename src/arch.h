@@ -37,6 +37,11 @@
 #include "opus_types.h"
 #include "common.h"
 
+#ifndef M_PI
+   #define M_PI 3.14159265358979323846
+#endif
+
+
 # if !defined(__GNUC_PREREQ)
 #  if defined(__GNUC__)&&defined(__GNUC_MINOR__)
 #   define __GNUC_PREREQ(_maj,_min) \
