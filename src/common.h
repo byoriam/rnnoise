@@ -5,32 +5,43 @@
 
 #include "stdlib.h"
 #include "string.h"
-#include <zephyr/kernel.h>
-// #include <zephyr/sys/printk.h>
+
+#ifdef __ZEPHYR__
+   #include <zephyr/kernel.h>
+   // #include <zephyr/sys/printk.h>
+#endif
 
 
 #define RNN_INLINE inline
 #define OPUS_INLINE inline
 
 
-/** RNNoise wrapper for malloc(). 
- * To do your own dynamic allocation, all you need to do is replace this function and rnnoise_free 
+/** RNNoise wrapper for malloc().
+ * To do your own dynamic allocation, all you need to do is replace this function and rnnoise_free
  */
 #ifndef OVERRIDE_RNNOISE_ALLOC
 static RNN_INLINE void *rnnoise_alloc (size_t size)
 {
-   // printk("[alloc] %d\n", size);
-   return k_malloc(size);
+   #ifdef __ZEPHYR__
+      // printk("[alloc] %d\n", size);
+      return k_malloc(size);
+   #else
+      return malloc(size);
+   #endif
 }
 #endif
 
-/** RNNoise wrapper for free(). 
- * To do your own dynamic allocation, all you need to do is replace this function and rnnoise_alloc 
+/** RNNoise wrapper for free().
+ * To do your own dynamic allocation, all you need to do is replace this function and rnnoise_alloc
  */
 #ifndef OVERRIDE_RNNOISE_FREE
 static RNN_INLINE void rnnoise_free (void *ptr)
 {
-   k_free(ptr);
+   #ifdef __ZEPHYR__
+      k_free(ptr);
+   #else
+      free(ptr);
+   #endif
 }
 #endif
 

@@ -41,6 +41,12 @@
 #include "rnn.h"
 #include "rnn_data.h"
 
+#ifndef __ZEPHYR__
+  #define k_malloc(size) malloc(size)
+  #define k_calloc(nmemb, size) calloc(nmemb, size)
+  #define k_free(ptr) free(ptr)
+#endif
+
 #define FRAME_SIZE_SHIFT 2
 #define FRAME_SIZE (120<<FRAME_SIZE_SHIFT)
 #define WINDOW_SIZE (2*FRAME_SIZE)
@@ -470,7 +476,7 @@ static void pitch_filter(kiss_fft_cpx *X, const kiss_fft_cpx *P, const float *Ex
 #else
     if (Exp[i]>g[i]) r[i] = 1;
     else r[i] = SQUARE(Exp[i])*(1-SQUARE(g[i]))/(.001f + SQUARE(g[i])*(1-SQUARE(Exp[i])));
-    r[i] = (float)sqrt(MIN16(1, MAX16(0, r[i])));
+    r[i] = sqrtf(MIN16(1, MAX16(0, r[i])));
 #endif
     r[i] *= sqrtf(Ex[i] / ( 1e-8f + Ep[i]));
   }
